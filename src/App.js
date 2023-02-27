@@ -61,7 +61,9 @@ function App() {
   }, [])
 
 const toggleProp = (home) =>{
-  console.log(home)
+  setHome(home)
+  toggle ? setToggle(false) : setToggle(true)
+  //console.log(home)
 }
 
 
@@ -97,6 +99,10 @@ const toggleProp = (home) =>{
         </div>
 
       </div>
+
+            {toggle  && (
+              <Home home={home} provider={provider} account={account} escrow={escrow} togglePop={toggleProp} />
+            )}
 
     </div>
   );
