@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 // Components
 import Navigation from "./components/Navigation";
 import Search from "./components/Search";
 import Home from "./components/Home";
-import Formular from "./components/Formular";
+import Step from "./components/Formular/Step";
+import MyStepper from "./components/Formular/MyStepper";
 
 // ABIs
 import RealEstate from "./abis/RealEstate.json";
@@ -14,7 +15,12 @@ import Escrow from "./abis/Escrow.json";
 // Config
 import config from "./config.json";
 
+export const FormContext = createContext();
+
 function App() {
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [formData, setFormData] = useState({});
+
   const [provider, setProvider] = useState(null);
   const [escrow, setEscrow] = useState(null);
 
@@ -101,7 +107,12 @@ function App() {
             </div>
           ))}
         </div>
-        <Formular />
+        <FormContext.Provider
+          value={{ activeStepIndex, setActiveStepIndex, formData, setFormData }}
+        >
+          <MyStepper />
+          <Step />
+        </FormContext.Provider>
       </div>
 
       {toggle && (
