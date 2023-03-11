@@ -1,22 +1,30 @@
 import {
   Button,
   Stack,
-  Box,
   ListItem,
   ListItemText,
   List,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import { Box } from "@mui/system";
+import React, { useContext, useState } from "react";
 import { FormContext } from "../../App";
 
 function ReviewInformations() {
   const { setActiveStepIndex, formData } = useContext(FormContext);
+  const [estimate, setEstimate] = useState("");
 
   const handleBack = () => {
     setActiveStepIndex((prevStep) => prevStep - 1);
   };
 
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const value =
+      (((formData.livingspace + formData.landarea) / 2) * 100 +
+        formData.numberofpieces * 10000  /100 );
+    setEstimate(value);
+  };
   console.log(formData);
 
   return (
@@ -113,50 +121,63 @@ function ReviewInformations() {
       </Stack>
 
       <Stack
-            sx={{ flexGrow: { xs: 1 },mt:8, mb: 3, justifyContent: "space-between" }}
-            direction={{ xs: "column", md: "row" }}
-            spacing={3}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                width: 200,
-                p: 1.5,
-                color: "grey",
-                backgroundColor: "#D8D8D8",
-                "&:hover": {
-                  color: "white",
-                  backgroundColor: "#868686",
-                },
-                fontSize: "1rem",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-              }}
-              onClick={handleBack}
-            >
-              Back
-            </Button>
+        sx={{
+          flexGrow: { xs: 1 },
+          mt: 8,
+          mb: 3,
+          justifyContent: "space-between",
+        }}
+        direction={{ xs: "column", md: "row" }}
+        spacing={3}
+      >
+        <Button
+          variant="contained"
+          sx={{
+            width: 200,
+            p: 1.5,
+            color: "grey",
+            backgroundColor: "#D8D8D8",
+            "&:hover": {
+              color: "white",
+              backgroundColor: "#868686",
+            },
+            fontSize: "1rem",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+          }}
+          onClick={handleBack}
+        >
+          Back
+        </Button>
 
-            <Button
-              variant="contained"
-              sx={{
-                width: 380,
-                color: "white",
-                backgroundColor: "#6C63FF",
-                "&:hover": {
-                  backgroundColor: "#4c46b6",
-                },
+        <Button
+          variant="contained"
+          sx={{
+            width: 380,
+            color: "white",
+            backgroundColor: "#6C63FF",
+            "&:hover": {
+              backgroundColor: "#4c46b6",
+            },
 
-                p: 1.5,
-                fontSize: "1rem",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-              }}
-              type="submit"
-            >
-              Receive my estimation
-            </Button>
-          </Stack>
+            p: 1.5,
+            fontSize: "1rem",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+          }}
+          onClick={handleFormSubmit}
+        >
+          Receive my estimation
+        </Button>
+      </Stack>
+        <Stack>
+          <Box>
+
+          {estimate && (
+            <Typography variant="h5">La valeur estimée du bien est de {estimate} euros.</Typography>
+            )}
+            </Box>
+        </Stack>
     </>
   );
 }

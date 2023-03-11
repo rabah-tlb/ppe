@@ -78,6 +78,8 @@ function PersonalInformations() {
                 fullWidth
                 id="outlined-first-name"
                 label="First name"
+                defaultValue={formData.firstname}
+                placeHolder={formData.firstname}
                 component={MyInput}
               />
             </Box>{" "}
