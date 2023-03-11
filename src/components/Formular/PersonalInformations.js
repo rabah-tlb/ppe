@@ -16,7 +16,6 @@ function PersonalInformations() {
     return <TextField {...field} {...props} />;
   };
 
-
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
     useContext(FormContext);
 
@@ -32,7 +31,7 @@ function PersonalInformations() {
     firstname: yup.string(),
     lastname: yup.string(),
     email: yup.string(),
-    phone: yup.string().max(10).min(10),
+    phone: yup.string().min(10),
   });
 
   const handleBack = () => {
@@ -42,14 +41,16 @@ function PersonalInformations() {
   return (
     <Formik
       initialValues={{
-        typeofproperty: "",
-        adress: "",
-        city: "",
-        postalcode: "",
-        livingspace: "",
-        landarea: "",
-        constructionyear: "",
-        numberofpieces: "",
+        typeofproperty: formData.typeofproperty,
+        adress: formData.adress,
+        city: formData.city,
+        postalcode: formData.postalcode,
+        livingspace: formData.livingspace,
+        landarea: formData.landarea,
+        constructionyear: formData.constructionyear,
+        numberofpieces: formData.numberofpieces,
+        propertystate: formData.propertystate,
+        propertycharacteristics: formData.propertycharacteristics,
         firstname: "",
         lastname: "",
         email: "",
@@ -60,11 +61,10 @@ function PersonalInformations() {
         const data = { ...formData, ...values };
         setFormData(data);
         setActiveStepIndex(activeStepIndex + 1);
-        console.log(data);
       }}
     >
       {(props: FormikProps<any>) => (
-        <Form autoComplete="nope">
+        <Form>
           <Stack
             sx={{ my: 3 }}
             direction={{ xs: "column", md: "row" }}
@@ -72,6 +72,7 @@ function PersonalInformations() {
           >
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
+                required
                 autoComplete="nope"
                 name="firstname"
                 fullWidth
@@ -82,6 +83,7 @@ function PersonalInformations() {
             </Box>{" "}
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
+                required
                 autoComplete="nope"
                 name="lastname"
                 fullWidth
@@ -99,9 +101,9 @@ function PersonalInformations() {
           >
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
+                required
                 autoComplete="nope"
                 name="email"
-                type="email"
                 fullWidth
                 id="outlined-email"
                 label="E-mail"
@@ -110,6 +112,7 @@ function PersonalInformations() {
             </Box>{" "}
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
+                required
                 autoComplete="nope"
                 name="phone"
                 fullWidth
@@ -140,47 +143,50 @@ function PersonalInformations() {
           </Stack>
 
           <Stack
-            sx={{ my: 3 }}
+            sx={{ flexGrow: { xs: 1 }, my: 3, justifyContent: "space-between" }}
             direction={{ xs: "column", md: "row" }}
             spacing={3}
           >
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  p: 1.5,
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-                disabled={activeStepIndex === 0}
-                onClick={handleBack}
-              >
-                Back
-              </Button>
-            </Box>
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
+            <Button
+              variant="contained"
+              sx={{
+                width: 200,
+                color: "grey",
+                backgroundColor: "#D8D8D8",
+                "&:hover": {
                   color: "white",
-                  backgroundColor: "#6C63FF",
-                  "&:hover": {
-                    backgroundColor: "#4c46b6",
-                  },
+                  backgroundColor: "#868686",
+                },
+                p: 1.5,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+              }}
+              disabled={activeStepIndex === 0}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
 
-                  p: 1.5,
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-                type="submit"
-              >
-                Next
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              sx={{
+                width: 200,
+                color: "white",
+                backgroundColor: "#6C63FF",
+                "&:hover": {
+                  backgroundColor: "#4c46b6",
+                },
+
+                p: 1.5,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+              }}
+              type="submit"
+            >
+              Next
+            </Button>
           </Stack>
         </Form>
       )}

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { FormContext } from "../../App";
 import PersonalInformations from "./PersonalInformations";
 import PropertyDetails from "./PropertyDetails";
-import ReviewInfo from "./ReviewInfo";
+import ReviewInformations from "./ReviewInformations";
 
 function Step() {
   const { activeStepIndex } = useContext(FormContext);
@@ -15,7 +15,7 @@ function Step() {
       stepContent = <PersonalInformations />;
       break;
     case 2:
-      stepContent = <ReviewInfo />;
+      stepContent = <ReviewInformations />;
       break;
     default:
       break;

@@ -17,7 +17,7 @@ function MyStepper() {
     });
   }, [activeStepIndex]);
   return (
-    <Stepper activeStep={activeStepIndex} orientation="horizontal">
+    <Stepper sx={{mt:10}} activeStep={activeStepIndex} orientation="horizontal">
       {steps.map((label, index) => (
         <Step key={index}>
           <StepLabel>{label}</StepLabel>

@@ -88,10 +88,6 @@ function PropertyDetails() {
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
     useContext(FormContext);
 
-  const renderError = (message) => (
-    <p className="italic text-red-600">{message}</p>
-  );
-
   const ValidationSchema = yup.object().shape({
     typeofproperty: yup.string(),
     adress: yup.string(),
@@ -104,7 +100,7 @@ function PropertyDetails() {
     firstname: yup.string(),
     lastname: yup.string(),
     email: yup.string(),
-    phone: yup.string().max(10).min(10),
+    phone: yup.string().min(10),
   });
 
   const handleBack = () => {
@@ -124,6 +120,8 @@ function PropertyDetails() {
         landarea: "",
         constructionyear: "",
         numberofpieces: "",
+        propertystate: "",
+        propertycharacteristics: [],
         firstname: "",
         lastname: "",
         email: "",
@@ -159,7 +157,6 @@ function PropertyDetails() {
               </Field>
             </Box>
           </Stack>
-          <ErrorMessage name="typeofproperty" render={renderError} />
           <Stack
             sx={{ my: 3 }}
             direction={{ xs: "column", md: "row" }}
@@ -176,7 +173,6 @@ function PropertyDetails() {
                 component={MyInput}
               />
             </Box>
-            <ErrorMessage name="adress" render={renderError} />
 
             <Stack
               direction="row"
@@ -194,7 +190,6 @@ function PropertyDetails() {
                   component={MyInput}
                 />
               </Box>
-              <ErrorMessage name="city" render={renderError} />
 
               <Box sx={{ flexGrow: { xs: 1, md: 0.3 } }}>
                 <Field
@@ -317,17 +312,18 @@ function PropertyDetails() {
                       checkedIcon={checkedIcon}
                       style={{ marginRight: 8 }}
                       checked={selected}
+                      
                     />
                     {option.label}
                   </li>
                 )}
                 renderInput={(params) => (
                   <Field
+                name="propertycharacteristics"
                     fullWidth
                     component={MyInput}
                     {...params}
                     label="Characteristics of the property"
-                    placeholder="Favorites"
                   />
                 )}
               />
@@ -335,47 +331,50 @@ function PropertyDetails() {
           </Stack>
 
           <Stack
-            sx={{ my: 3 }}
+            sx={{ flexGrow: { xs: 1 }, my: 3, justifyContent: "space-between" }}
             direction={{ xs: "column", md: "row" }}
             spacing={3}
           >
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  p: 1.5,
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-                disabled={activeStepIndex === 0}
-                onClick={handleBack}
-              >
-                Back
-              </Button>
-            </Box>
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{
+            <Button
+              variant="contained"
+              sx={{
+                width: 200,
+                color: "grey",
+                backgroundColor: "#D8D8D8",
+                "&:hover": {
                   color: "white",
-                  backgroundColor: "#6C63FF",
-                  "&:hover": {
-                    backgroundColor: "#4c46b6",
-                  },
+                  backgroundColor: "#868686",
+                },
+                p: 1.5,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+              }}
+              disabled={activeStepIndex === 0}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
 
-                  p: 1.5,
-                  fontSize: "1rem",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-                type="submit"
-              >
-                Next
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              sx={{
+                width: 200,
+                color: "white",
+                backgroundColor: "#6C63FF",
+                "&:hover": {
+                  backgroundColor: "#4c46b6",
+                },
+
+                p: 1.5,
+                fontSize: "1rem",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+              }}
+              type="submit"
+            >
+              Next
+            </Button>
           </Stack>
         </Form>
       )}
