@@ -16,18 +16,10 @@ function PersonalInformations() {
     return <TextField {...field} {...props} />;
   };
 
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
+  const { activeStepIndex, setActiveStepIndex, formDataOwner, setFormDataOwner } =
     useContext(FormContext);
 
   const ValidationSchema = yup.object().shape({
-    typeofproperty: yup.string(),
-    adress: yup.string(),
-    city: yup.string(),
-    postalcode: yup.string().max(5),
-    livingspace: yup.string(),
-    landarea: yup.string(),
-    constructionyear: yup.string().max(4),
-    numberofpieces: yup.string(),
     firstname: yup.string(),
     lastname: yup.string(),
     email: yup.string(),
@@ -41,16 +33,6 @@ function PersonalInformations() {
   return (
     <Formik
       initialValues={{
-        typeofproperty: formData.typeofproperty,
-        adress: formData.adress,
-        city: formData.city,
-        postalcode: formData.postalcode,
-        livingspace: formData.livingspace,
-        landarea: formData.landarea,
-        constructionyear: formData.constructionyear,
-        numberofpieces: formData.numberofpieces,
-        propertystate: formData.propertystate,
-        propertycharacteristics: formData.propertycharacteristics,
         firstname: "",
         lastname: "",
         email: "",
@@ -58,8 +40,8 @@ function PersonalInformations() {
       }}
       validationSchema={ValidationSchema}
       onSubmit={(values) => {
-        const data = { ...formData, ...values };
-        setFormData(data);
+        const data = { ...formDataOwner, ...values };
+        setFormDataOwner(data);
         setActiveStepIndex(activeStepIndex + 1);
       }}
     >
@@ -78,8 +60,6 @@ function PersonalInformations() {
                 fullWidth
                 id="outlined-first-name"
                 label="First name"
-                defaultValue={formData.firstname}
-                placeHolder={formData.firstname}
                 component={MyInput}
               />
             </Box>{" "}

@@ -10,22 +10,77 @@ import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
 import { FormContext } from "../../App";
 
-function ReviewInformations() {
-  const { setActiveStepIndex, formData } = useContext(FormContext);
+export default function ReviewInformations() {
+  const { setActiveStepIndex, formDataResidence, formDataOwner } =
+    useContext(FormContext);
   const [estimate, setEstimate] = useState("");
+  // const fs = require("fs");
+  // var fs = require('browserify-fs');
+
+  const formdatatest = {
+    name: "",
+    adress:
+      formDataResidence.adress +
+      ", " +
+      formDataResidence.city +
+      "," +
+      formDataResidence.postalcode,
+    description: formDataResidence.description,
+    image: "fileUrl",
+    attributes: [
+      {
+        trait_type: "Purchase Price",
+        value: "price",
+      },
+      {
+        trait_type: "Type of Residence",
+        value: formDataResidence.typeofresidence,
+      },
+      {
+        trait_type: "Bed Rooms",
+        value: formDataResidence.bedrooms,
+      },
+      {
+        trait_type: "Bathrooms",
+        value: formDataResidence.bathrooms,
+      },
+      {
+        trait_type: "Square Feet",
+        value: formDataResidence.squarefeet,
+      },
+      {
+        trait_type: "Year Built",
+        value: formDataResidence.constructionyear,
+      },
+    ],
+  };
+
+  console.log(formdatatest);
 
   const handleBack = () => {
     setActiveStepIndex((prevStep) => prevStep - 1);
   };
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const value =
-      (((formData.livingspace + formData.landarea) / 2) * 100 +
-        formData.numberofpieces * 10000  /100 );
+  const value =
+    ((parseInt(formDataResidence.bathrooms) +
+      parseInt(formDataResidence.bedrooms)) /
+      2) *
+      100 +
+    (parseInt(formDataResidence.squarefeet) * 10000) / 100;
+
+  const handleFormSubmit = (formDataResidence) => {
     setEstimate(value);
+
+    console.log(formDataResidence);
+
+    const jsonData = JSON.stringify(formdatatest);
+    console.log(jsonData);
+    // fs.writeFile("data.json", jsonData, null);
+    // fs.writeFile('../../../metadata/data.json', jsonData, function(err) {
+    //   if (err) throw err;
+    //   console.log('File written successfully!');
+    // });
   };
-  console.log(formData);
 
   return (
     <>
@@ -34,25 +89,25 @@ function ReviewInformations() {
           sx={{ mt: 5, fontSize: "1rem", fontWeight: "bold" }}
           variant="overline"
         >
-          Property Details
+          Residence Details
         </Typography>
         <List sx={{ display: "flex", flexDirection: "row" }}>
           <ListItem>
             <ListItemText
               primary="Type of property"
-              secondary={formData.typeofproperty}
+              secondary={formDataResidence.typeofresidence}
             />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Adress" secondary={formData.adress} />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="City" secondary={formData.city} />
-          </ListItem>
-          <ListItem>
             <ListItemText
-              primary="Postal code"
-              secondary={formData.postalcode}
+              primary="Adress"
+              secondary={
+                formDataResidence.adress +
+                ", " +
+                formDataResidence.city +
+                ", " +
+                formDataResidence.postalcode
+              }
             />
           </ListItem>
         </List>
@@ -60,36 +115,34 @@ function ReviewInformations() {
           <ListItem>
             <ListItemText
               primary="Living area"
-              secondary={formData.livingspace}
+              secondary={formDataResidence.squarefeet}
             />
           </ListItem>
-          <ListItem>
-            <ListItemText primary="Land area" secondary={formData.landarea} />
-          </ListItem>
+
           <ListItem>
             <ListItemText
               primary="Year of construction"
-              secondary={formData.constructionyear}
+              secondary={formDataResidence.constructionyear}
             />
           </ListItem>
           <ListItem>
             <ListItemText
-              primary="Number of pieces"
-              secondary={formData.numberofpieces}
+              primary="Number of bed rooms"
+              secondary={formDataResidence.bedrooms}
             />
           </ListItem>
         </List>
         <List sx={{ display: "flex", flexDirection: "row" }}>
           <ListItem>
             <ListItemText
-              primary="State of the property"
-              secondary={formData.propertystate}
+              primary="Number of bath rooms"
+              secondary={formDataResidence.bathrooms}
             />
           </ListItem>
           <ListItem>
             <ListItemText
-              primary="Characteristics of the property"
-              secondary={formData.propertycharacteristics}
+              primary="Description of residence"
+              secondary={formDataResidence.description}
             />
           </ListItem>
         </List>
@@ -104,18 +157,24 @@ function ReviewInformations() {
         </Typography>
         <List sx={{ display: "flex", flexDirection: "row" }}>
           <ListItem>
-            <ListItemText primary="First name" secondary={formData.firstname} />
+            <ListItemText
+              primary="First name"
+              secondary={formDataOwner.firstname}
+            />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Last name" secondary={formData.lastname} />
+            <ListItemText
+              primary="Last name"
+              secondary={formDataOwner.lastname}
+            />
           </ListItem>
         </List>
         <List sx={{ display: "flex", flexDirection: "row" }}>
           <ListItem>
-            <ListItemText primary="E-mail" secondary={formData.email} />
+            <ListItemText primary="E-mail" secondary={formDataOwner.email} />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Phone" secondary={formData.phone} />
+            <ListItemText primary="Phone" secondary={formDataOwner.phone} />
           </ListItem>
         </List>
       </Stack>
@@ -170,16 +229,15 @@ function ReviewInformations() {
           Receive my estimation
         </Button>
       </Stack>
-        <Stack>
-          <Box>
-
+      <Stack>
+        <Box>
           {estimate && (
-            <Typography variant="h5">La valeur estimée du bien est de {estimate} euros.</Typography>
-            )}
-            </Box>
-        </Stack>
+            <Typography variant="h5">
+              La valeur estimée du bien est de {estimate} euros.
+            </Typography>
+          )}
+        </Box>
+      </Stack>
     </>
   );
 }
-
-export default ReviewInformations;

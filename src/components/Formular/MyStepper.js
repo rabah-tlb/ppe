@@ -2,7 +2,7 @@ import { Stepper, Step, StepLabel } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { FormContext } from "../../App";
 
-const steps = ["Property Details", "Personal Informations", "Review and Submit"];
+const steps = ["Residence Details", "Personal Informations", "Review and Submit"];
 
 function MyStepper() {
   const { activeStepIndex } = useContext(FormContext);

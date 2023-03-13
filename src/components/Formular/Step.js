@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { FormContext } from "../../App";
 import PersonalInformations from "./PersonalInformations";
-import PropertyDetails from "./PropertyDetails";
+import ResidenceDetails from "./ResidenceDetails";
 import ReviewInformations from "./ReviewInformations";
 
 function Step() {
@@ -9,7 +9,7 @@ function Step() {
   let stepContent;
   switch (activeStepIndex) {
     case 0:
-      stepContent = <PropertyDetails />;
+      stepContent = <ResidenceDetails />;
       break;
     case 1:
       stepContent = <PersonalInformations />;

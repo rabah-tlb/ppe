@@ -6,133 +6,104 @@ import {
   MenuItem,
   InputAdornment,
   TextField,
-  Checkbox,
-  Autocomplete,
 } from "@mui/material";
 import React, { useContext } from "react";
 import { FormContext } from "../../App";
+import AddFile from "./AddFile";
 import * as yup from "yup";
 
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-
-function PropertyDetails() {
+function ResidenceDetails() {
+  const [selectedFile, setSelectedFile] = React.useState();
   const MyInput = ({ field, form, ...props }) => {
     return <TextField {...field} {...props} />;
   };
 
-  const propertyType = [
+  const typeofResidence = [
     {
-      value: "Residential",
-      label: "Residential",
+      value: "Single family residence",
+      label: "Single family residence",
     },
     {
-      value: "Commercial",
-      label: "Commercial",
-    },
-    {
-      value: "Industrial",
-      label: "Industrial",
-    },
-    {
-      value: "Special purpose",
-      label: "Special purpose",
+      value: "Condo",
+      label: "Condo",
     },
   ];
 
-  const propertyCharacteristics = [
-    {
-      value: "Swimming Pool",
-      label: "Swimming Pool",
-    },
-    {
-      value: "SPA",
-      label: "SPA",
-    },
-    {
-      value: "Garage",
-      label: "Garage",
-    },
-    {
-      value: "Cellar",
-      label: "Cellar",
-    },
-    {
-      value: "Veranda",
-      label: "Veranda",
-    },
-  ];
-
-  const propertystate = [
-    {
-      value: "Refurbished (- 2 years)",
-      label: "Refurbished (- 2 years)",
-    },
-    {
-      value: "Very good state",
-      label: "Very good state",
-    },
-    {
-      value: "Good condition",
-      label: "Good condition",
-    },
-    {
-      value: "To refresh",
-      label: "To refresh",
-    },
-    {
-      value: "To renovate",
-      label: "To renovate",
-    },
-  ];
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
-    useContext(FormContext);
+  const {
+    activeStepIndex,
+    setActiveStepIndex,
+    formDataResidence,
+    setFormDataResidence,
+  } = useContext(FormContext);
 
   const ValidationSchema = yup.object().shape({
-    typeofproperty: yup.string(),
+    name: yup.string(),
     adress: yup.string(),
     city: yup.string(),
     postalcode: yup.string().max(5),
-    livingspace: yup.string(),
-    landarea: yup.string(),
+    description: yup.string(),
+    typeofresidence: yup.string(),
+    price: yup.string(),
     constructionyear: yup.string().max(4),
-    numberofpieces: yup.string(),
-    firstname: yup.string(),
-    lastname: yup.string(),
-    email: yup.string(),
-    phone: yup.string().min(10),
+    bedrooms: yup.string(),
+    bathrooms: yup.string(),
+    squarefeet: yup.string(),
   });
 
   const handleBack = () => {
     setActiveStepIndex((prevStep) => prevStep - 1);
   };
 
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
+  const [fileUrl, setfileUrl] = React.useState(null);
+
   return (
     <Formik
       initialValues={{
-        typeofproperty: "",
+        name: "",
         adress: "",
         city: "",
         postalcode: "",
-        livingspace: "",
-        landarea: "",
-        constructionyear: "",
-        numberofpieces: "",
-        propertystate: "",
-        propertycharacteristics: [],
-        firstname: "",
-        lastname: "",
-        email: "",
-        phone: "",
+        description: "",
+        image: fileUrl,
+        // attributes: [
+        //   {
+        //     trait_type: "Purchase Price",
+        //     value: "",
+        //   },
+        //   {
+        //     trait_type: "Type of Residence",
+        //     value: "",
+        //   },
+        //   {
+        //     trait_type: "Bed Rooms",
+        //     value: "",
+        //   },
+        //   {
+        //     trait_type: "Bathrooms",
+        //     value: "",
+        //   },
+        //   {
+        //     trait_type: "Square Feet",
+        //     value: "",
+        //   },
+        //   {
+        //     trait_type: "Year Built",
+        //     value: "",
+        //   },
+        // ],
       }}
       validationSchema={ValidationSchema}
       onSubmit={(values) => {
-        const data = { ...formData, ...values };
-        setFormData(data);
+        const data = { ...formDataResidence, ...values };
+        setFormDataResidence(data);
         setActiveStepIndex(activeStepIndex + 1);
         console.log(data);
+        // data.attributes[0].value = data.price;
+        // data.attributes[1].value = data.typeofresidence;
+        // data.attributes[2].value = data.bedrooms;
+        // data.attributes[3].value = data.bathrooms;
+        // data.attributes[4].value = data.squarefeet;
+        // data.attributes[5].value = data.constructionyear;
       }}
     >
       {(props: FormikProps<any>) => (
@@ -143,13 +114,13 @@ function PropertyDetails() {
                 autoComplete="nope"
                 fullWidth
                 required
-                name="typeofproperty"
-                id="outlined-select-property"
+                name="typeofresidence"
+                id="outlined-select-residence"
                 select
-                label="Type of property"
+                label="Type of residence"
                 component={MyInput}
               >
-                {propertyType.map((option) => (
+                {typeofResidence.map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
@@ -168,7 +139,7 @@ function PropertyDetails() {
                 required
                 name="adress"
                 fullWidth
-                id="outlined-select-adress"
+                id="outlined-adress"
                 label="Adress"
                 component={MyInput}
               />
@@ -213,45 +184,20 @@ function PropertyDetails() {
               <Field
                 autoComplete="nope"
                 required
-                name="livingspace"
+                name="squarefeet"
                 fullWidth
-                id="outlined-living-space"
-                label="What is the living area ?"
+                id="outlined-square-feet"
+                label="What is the area of ​​the residence ?"
                 component={MyInput}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
-                      <span style={{ fontWeight: "bold" }}>m²</span>
+                      <span style={{ fontWeight: "bold" }}>pi²</span>
                     </InputAdornment>
                   ),
                 }}
               />
             </Box>{" "}
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Field
-                autoComplete="nope"
-                required
-                name="landarea"
-                fullWidth
-                id="outlined-land-area"
-                label="What is the land area ?"
-                component={MyInput}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <span style={{ fontWeight: "bold" }}>m²</span>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Box>
-          </Stack>
-
-          <Stack
-            sx={{ my: 3 }}
-            direction={{ xs: "column", md: "row" }}
-            spacing={3}
-          >
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
                 autoComplete="nope"
@@ -262,17 +208,6 @@ function PropertyDetails() {
                 label="Year of construction"
                 component={MyInput}
               />
-            </Box>{" "}
-            <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Field
-                autoComplete="nope"
-                required
-                name="numberofpieces"
-                fullWidth
-                id="outlined-number-of-pieces"
-                label="How many pieces are there ?"
-                component={MyInput}
-              />
             </Box>
           </Stack>
 
@@ -283,53 +218,67 @@ function PropertyDetails() {
           >
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
               <Field
+                autoComplete="nope"
                 required
+                name="bedrooms"
                 fullWidth
-                name="propertystate"
-                id="outline-proprety-state"
-                select
-                label="State of the property"
+                id="outlined-number-of-bedrooms"
+                label="How many bed rooms are there ?"
                 component={MyInput}
-              >
-                {propertystate.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Field>
+              />
             </Box>
             <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }}>
-              <Autocomplete
-                multiple
-                id="outline-property-characteristics"
-                options={propertyCharacteristics}
-                disableCloseOnSelect
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
-                    <Checkbox
-                      icon={icon}
-                      checkedIcon={checkedIcon}
-                      style={{ marginRight: 8 }}
-                      checked={selected}
-                      
-                    />
-                    {option.label}
-                  </li>
-                )}
-                renderInput={(params) => (
-                  <Field
-                name="propertycharacteristics"
-                    fullWidth
-                    component={MyInput}
-                    {...params}
-                    label="Characteristics of the property"
-                  />
-                )}
+              <Field
+                autoComplete="nope"
+                required
+                name="bathrooms"
+                fullWidth
+                id="outlined-number-of-bathrooms"
+                label="How many bath rooms are there ?"
+                component={MyInput}
               />
             </Box>
           </Stack>
 
+          <Stack
+            sx={{ my: 3 }}
+            direction={{ xs: "column", md: "row" }}
+            spacing={3}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "left",
+                flexGrow: { xs: 1, md: 1 },
+              }}
+            >
+              <AddFile
+                setfileUrl={setfileUrl}
+                fileUrl={fileUrl}
+                setSelectedFile={setSelectedFile}
+                selectedFile={selectedFile}
+              />
+            </Box>
+          </Stack>
+
+          <Stack
+            sx={{ my: 3 }}
+            direction={{ xs: "column", md: "row" }}
+            spacing={3}
+          >
+            <Box sx={{ flexGrow: { xs: 1, md: 1 } }}>
+              <Field
+                id="outlined-multiline-residence-description"
+                multiline
+                maxRows={3}
+                required
+                fullWidth
+                name="description"
+                label="Description"
+                component={MyInput}
+              />
+            </Box>
+          </Stack>
           <Stack
             sx={{ flexGrow: { xs: 1 }, my: 3, justifyContent: "space-between" }}
             direction={{ xs: "column", md: "row" }}
@@ -382,4 +331,4 @@ function PropertyDetails() {
   );
 }
 
-export default PropertyDetails;
+export default ResidenceDetails;

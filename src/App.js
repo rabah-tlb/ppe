@@ -19,7 +19,8 @@ export const FormContext = createContext();
 
 function App() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [formData, setFormData] = useState({});
+  const [formDataResidence, setFormDataResidence] = useState({});
+  const [formDataOwner, setFormDataOwner] = useState({});
 
   const [provider, setProvider] = useState(null);
   const [escrow, setEscrow] = useState(null);
@@ -108,7 +109,7 @@ function App() {
           ))}
         </div>
         <FormContext.Provider
-          value={{ activeStepIndex, setActiveStepIndex, formData, setFormData }}
+          value={{ activeStepIndex, setActiveStepIndex, formDataResidence, setFormDataResidence, formDataOwner,setFormDataOwner }}
         >
           <MyStepper />
           <Step />
